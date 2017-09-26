@@ -2,6 +2,7 @@ from django.shortcuts import render, HttpResponse, redirect
 from django.contrib import messages
 from datetime import datetime
 from .models import *
+import config
 
 def start(request):
     init_session(request)
