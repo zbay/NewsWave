@@ -7,7 +7,7 @@ urlpatterns = [
   url(r'^login$', views.login), #post
   url(r'^register$', views.register), #post
   url(r'^news$', views.get_news), # POST request(s) to news API
-  url(r'^logout$', view.logout),
+  url(r'^logout$', views.logout),
   url(r'^weather$', views.weather), # POST request(s) to weather API
   url(r'^notes$', views.notes), # user retrieves notes from DB
   url(r'^reading_list/(?P<username>)$', views.reading_list), # publicly available reading list. user can set to private in options

@@ -10,7 +10,8 @@ def start(request):
         return redirect("/homepage")
     context = {
         'name': request.session['name'],
-        'username': request.session['username']
+        'username': request.session['username'],
+        'user_id': request.session['user_id']
     }
     return render(request, "start.html", context)
 
@@ -44,7 +45,7 @@ def register(request):
         return redirect("/")
     else:
         request.session['user_id'] = register_result['user'].id
-        request.session['first_name'] = extract_first_name(login_result['user'].name)
+        request.session['first_name'] = extract_first_name(register_result['user'].name)
         return redirect("/settings")
 
 def logout(request):
@@ -54,7 +55,7 @@ def logout(request):
 def home(request):
     init_session(request)
     # get all locations, outlets, and notes connected to the specific user
-    user = User.get(id=request.session['user_id'])
+    user = User.objects.get(id=request.session['user_id'])
     locations = user.locations.all()
     outlets = user.outlets.all()
     notes = user.notes.all()
@@ -63,6 +64,7 @@ def home(request):
     if len(outlets) == 0:
         outlets = None
     if len(notes) == 0:
+        notes = None
     context = {
         'first_name': request.session['first_name'],
         'locations': locations,
@@ -102,6 +104,12 @@ def delete_story(request): # want to delete story entirely if only one user has 
     init_session(request)
     if request.session['user_id'] == "" or request.method != "POST":
         return redirect("/")
+
+def weather(request):
+    pass
+
+def add_story(request):
+    pass
     
 def new_note(request): 
     init_session(request)

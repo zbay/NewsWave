@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+    <script>
+        $(document).ready(function(){
+            $.ajax({
+                url: "https://newsapi.org/v1/sources?language=en",
+                method: "GET"
+            })
+            .done(function(sources){
+                sources = sources.sources;
+                for(var i = 0; i < sources.length; i++){
+                    source = sources[i];
+                    var inputStr = "<input type='checkbox' name='outlets' value='" + source.id + "' />"
+                    var labelStr = "<label>" + source.name + "</label><br />"
+                    $("#outlet_box").append(inputStr + labelStr);
+                }
+            });
+        });
+    </script>
+    <form action="/settings" method="POST">
+        {% csrf_token %}
+        <legend>Pick your favorite news outlets (no more than 5):</legend>
+        <div id="outlet_box"></div>
+        </div>
+        <input type="submit" value="Configure"/>
+    </form>
+{% endblock %}

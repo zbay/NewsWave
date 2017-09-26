@@ -1,11 +1,10 @@
 {% extends "base.html" %}
-{% block child_content %}
+{% block content %}
     {% if locations %}
         {% for location in locations %}
             <div class="location"></div>
         {% endfor %}
     {% endif %}
-    {% endblock %}
     {% if outlets %}
         {% for outlet in outlets %}
             <div class="outlet"></div>
@@ -16,4 +15,4 @@
             <div class="note"></div>
         {% endfor %}
     {% endif %}
-{% endblock child_content %}
+{% endblock content %}
