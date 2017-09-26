@@ -56,6 +56,7 @@ class NoteManager(models.Manager):
         return errors
 class Note(models.Model):
     text = models.TextField()
+    user = models.ForeignKey(User, related_name="notes")
     created_at = models.DateTimeField(auto_now_add = True)
     updated_at = models.DateTimeField(auto_now = True)
     objects = NoteManager()
@@ -63,14 +64,14 @@ class Note(models.Model):
 class OutletManager(models.Manager):
     pass
 class Outlet(models.Model):
-    pass
+    user = models.ManyToManyField(User, related_name="outlets")
 
 class LocationManager(models.Manager):
     pass
 class Location(models.Model):
-    pass
+    user = models.ManyToManyField(User, related_name="locations")
 
 class StoryManager(models.Manager):
     pass
 class Story(models.Model):
-    pass
+    user = models.ManyToManyField(User, related_name="stories")

@@ -5,7 +5,7 @@ from .models import *
 
 def start(request):
     init_session(request)
-    if user_id != "":
+    if request.session['user_id'] != "":
         return redirect("/homepage")
     context = {
         'name': request.session['name'],
@@ -15,7 +15,7 @@ def start(request):
 
 def login(request):
     init_session(request)
-    if user_id != "" or request.method != "POST":
+    if request.session['user_id'] != "" or request.method != "POST":
         return redirect("/homepage")
     login_result = User.objects.login(request.POST)
     errors = login_result['errors']
@@ -31,7 +31,7 @@ def login(request):
 
 def register(request):
     init_session(request)
-    if user_id != "" or request.method != "POST":
+    if request.session['user_id'] != "" or request.method != "POST":
         return redirect("/homepage")
     register_result = User.objects.register(request.POST)
     errors = register_result['errors']
@@ -57,6 +57,11 @@ def home(request):
     locations = user.locations.all()
     outlets = user.outlets.all()
     notes = user.notes.all()
+    if len(locations) == 0:
+        locations = None
+    if len(outlets) == 0:
+        outlets = None
+    if len(notes) == 0:
     context = {
         'first_name': request.session['first_name'],
         'locations': locations,
@@ -74,6 +79,9 @@ def notes(request):
 
 def reading_list(request, username):
     init_session(request)
+    # TODO: add a privacy check (whether the user has indicated a preference for privacy)
+    if request.session['user_id'] == "":
+        return redirect("/")
     stories = User.objects.get(id=request.session['user_id']).stories.all()
     context = {
         'stories': stories
@@ -83,12 +91,18 @@ def reading_list(request, username):
 def settings(request):
     init_session(request)
     # how do we display the saved settings?
+    if request.method == "GET":
+        context = {}
+        return render(request, "settings.html", context)
+    if request.method == "POST":
+        return redirect("/")
 
-def delete_story(request):
+def delete_story(request): # want to delete story entirely if only one user has saved it. Otherwise, just remove it from the specific user.stories
     init_session(request)
+    if request.session['user_id'] == "" or request.method != "POST":
+        return redirect("/")
     
-
-def new_note(request):
+def new_note(request): 
     init_session(request)
 
 def delete_note(request):
