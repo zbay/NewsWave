@@ -98,6 +98,10 @@ def settings(request):
         context = {}
         return render(request, "settings.html", context)
     if request.method == "POST":
+        outlet_errors = OutletManager.objects.outlet_validator(request.POST, request.session['user_id'])
+        if len(errors):
+            for tag, error in errors.iteritems():
+                messages.error(request, error)
         return redirect("/")
 
 def delete_story(request): # want to delete story entirely if only one user has saved it. Otherwise, just remove it from the specific user.stories
