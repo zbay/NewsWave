@@ -41,7 +41,7 @@
                         var imgString = "<img src='" + story.urlToImage + "'/><br />";
                         var descString = "<p>" + story.description + "</p>";
                         var formString = "<form action='/add_story' method='post'><input type='hidden' name='url' value='" + story.url + "'/><input type='hidden' name='title' value='" + story.title + "'/><input type='submit' value='Add to reading list'></form>";
-                        parentNode.append("<div class='story'>" + titleString + imgString + descString + formString "</div>");
+                        parentNode.append("<div class='story'>" + titleString + imgString + descString + formString + "</div>");
                     }
                 });
             });
