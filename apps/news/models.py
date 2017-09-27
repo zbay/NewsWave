@@ -62,9 +62,24 @@ class Note(models.Model):
     objects = NoteManager()
 
 class OutletManager(models.Manager):
-    pass
-class Outlet(models.Model):
-    user = models.ManyToManyField(User, related_name="outlets")
+    def outlet_validator(self,postData, user_id):
+        errors = {}
+        user = User.objects.get(id=user_id)
+        for data in postData:
+            if len(data) < 2:
+                errors['news'] = "Your news outlet not valid" 
+        for data in postData:
+            outlet = NewsOutlet.objects.filter(outlet=data)
+            if len(outlet[0]):
+                outlet[0].users.add(user)
+            else:
+                NewsOutlet.objects.create(outlet=data, users=user)
+        return errors
+
+class NewsOutlet(models.Model):
+    outlet = models.CharField(max_length=255)
+    users = models.ManyToManyField(User, related_name="outlets")
+    objects = OutletManager()
 
 class LocationManager(models.Manager):
     pass
