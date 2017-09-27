@@ -8,15 +8,14 @@
             })
             .done(function(sources){
                 sources = sources.sources;
-                for(var i = 0; i < 5; i++){
-                    $("#outlet_box").append("<label>Source " + (i+1) + ": </label>");
-                    var selectNode = $("<select name='outlet" + i + "'></select>");
-                    for(var j = 0; j < sources.length; j++){
-                        source = sources[j];
-                        var optionStr = "<option value='" + source.id + "," + source.name + "'>" + source.name + "</option>"; // stores two pieces of info in one field, comma-separated
-                        selectNode.append(optionStr);
-                    }
-                    $("#outlet_box").append(selectNode).append("<br/>");
+                optionStr = "";
+                for(var i = 0; i < sources.length; i++){
+                    source = sources[i];
+                    optionStr += "<option value='" + source.id + "," + source.name + "'>" + source.name + "</option>"; // stores two pieces of info in one field, comma-separated                    
+                }
+                for(var i = 1; i <= 5; i++){
+                    var selectNode = $("select[name='outlet" + i + "']");
+                    selectNode.append(optionStr);
                 }
             });
         });
@@ -24,7 +23,32 @@
     <form action="/settings" method="POST">
         {% csrf_token %}
         <legend>Pick 5 favorite news outlets:</legend>
-        <div id="outlet_box"></div>
+        <div id="outlet_box">
+                <label>Source 1:</label>
+                <select name='outlet1'>
+                    <option value='{{outlets.0.sourceId}},{{outlets.0.sourceName}}' selected>{{outlets.0.sourceName}}</option>
+                </select>
+                <br />
+                <label>Source 2:</label>
+                <select name='outlet2'>
+                    <option value='{{outlets.1.sourceId}},{{outlets.1.sourceName}}' selected>{{outlets.1.sourceName}}</option>
+                </select>
+                <br />
+                <label>Source 3:</label>
+                <select name='outlet3'>
+                    <option value='{{outlets.2.sourceId}},{{outlets.2.sourceName}}' selected>{{outlets.2.sourceName}}</option>
+                </select>
+                <br />
+                <label>Source 4:</label>
+                <select name='outlet4'>
+                        <option value='{{outlets.3.sourceId}},{{outlets.3.sourceName}}' selected>{{outlets.3.sourceName}}</option>
+                </select>
+                <br />
+                <label>Source 5:</label>
+                <select name='outlet5'>
+                    <option value='{{outlets.4.sourceId}},{{outlets.4.sourceName}}' selected>{{outlets.4.sourceName}}</option>
+                </select>
+        </div>
         </div>
         <input type="submit" value="Configure"/>
     </form>

@@ -98,7 +98,7 @@ def settings(request):
     init_session(request)
     # how do we display the saved settings?
     if request.method == "GET":
-        outlets = User.objects.get(id=request.session['user_id']).outets.all()
+        outlets = User.objects.get(id=request.session['user_id']).outlets.all()
         context = {
             'outlets': outlets
         }
