@@ -1,4 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
 <h2>Reading List</h2>
+<div id="readingList">
+    {% for story in stories %}
+        <div class="story">
+            <a href="{{story.story_url}}">{{story.story_name}}</a>
+        </div>
+    {% endfor %}
+</div>
 {% endblock content %}

@@ -54,6 +54,8 @@ def logout(request):
 def home(request):
     init_session(request)
     # get all locations, outlets, and notes connected to the specific user
+    if request.session['user_id'] == "":
+        return redirect("/")
     user = User.objects.get(id=request.session['user_id'])
     print user.outlets
     locations = user.locations.all()
@@ -110,10 +112,15 @@ def settings(request):
             return redirect("/settings")
         return redirect("/")
 
-def add_story(request):
+def add_story(request): # need to refactor home.html to use AJAX for this
     init_session(request)
     if request.session['user_id'] == "" or request.method != "POST":
-        return redirect("/homepage")   
+        return redirect("/homepage")  
+    story_errors = Story.objects.story_validator(postData)
+    if len(story_errors):
+        for tag, error in story_errors.iteritems():
+            messages.error(request, error)
+    return 
 
 
 def delete_story(request): # want to delete story entirely if only one user has saved it. Otherwise, just remove it from the specific user.stories

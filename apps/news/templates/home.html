@@ -40,13 +40,23 @@
                         var titleString = "<a href='" + story.url + "'>" + story.title + "</a><br />";
                         var imgString = "<img src='" + story.urlToImage + "'/><br />";
                         var descString = "<p>" + story.description + "</p>";
-                        var formString = "<form action='/add_story' method='post'><input type='hidden' name='url' value='" + story.url + "'/><input type='hidden' name='title' value='" + story.title + "'/><input type='submit' value='Add to reading list'></form>";
+                        var formString = "<form action='/add_story' method='post' class='storyForm'>{% csrf_token %}<input type='hidden' name='url' value='" + story.url + "'/><input type='hidden' name='title' value='" + story.title + "'/><input type='submit' class='story_submit' value='Add to reading list'></form>";
                         parentNode.append("<div class='story'>" + titleString + imgString + descString + formString + "</div>");
                     }
                 });
             });
         </script>
     {% endfor %}
+    <script>
+        $(document).ready(function(e){    
+            $(".storyForm").submit(function(e){
+                e.preventDefault();
+            });
+            $(".storySubmit").click(function(){
+                // submit story to user's reading list
+            });
+        });
+    </script>
     {% if locations %}
         {% for location in locations %}
             <div class="location"></div>
