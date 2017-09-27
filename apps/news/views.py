@@ -96,7 +96,6 @@ def reading_list(request, username):
 
 def settings(request):
     init_session(request)
-    # how do we display the saved settings?
     if request.method == "GET":
         outlets = User.objects.get(id=request.session['user_id']).outlets.all()
         context = {
@@ -111,16 +110,19 @@ def settings(request):
             return redirect("/settings")
         return redirect("/")
 
+def add_story(request):
+    init_session(request)
+    if request.session['user_id'] == "" or request.method != "POST":
+        return redirect("/homepage")   
+
+
 def delete_story(request): # want to delete story entirely if only one user has saved it. Otherwise, just remove it from the specific user.stories
     init_session(request)
     if request.session['user_id'] == "" or request.method != "POST":
         return redirect("/")
 
 def weather(request):
-    pass
-
-def add_story(request):
-    pass
+    init_session(request)
     
 def new_note(request): 
     init_session(request)
