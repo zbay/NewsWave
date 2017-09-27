@@ -8,18 +8,22 @@
             })
             .done(function(sources){
                 sources = sources.sources;
-                for(var i = 0; i < sources.length; i++){
-                    source = sources[i];
-                    var inputStr = "<input type='checkbox' name='outlets' value='" + source.id + "' />"
-                    var labelStr = "<label>" + source.name + "</label><br />"
-                    $("#outlet_box").append(inputStr + labelStr);
+                for(var i = 0; i < 5; i++){
+                    $("#outlet_box").append("<label>Source " + (i+1) + ": </label>");
+                    var selectNode = $("<select name='outlet" + i + "'></select>");
+                    for(var j = 0; j < sources.length; j++){
+                        source = sources[j];
+                        var optionStr = "<option value='" + source.id + "'>" + source.name + "</option>";
+                        selectNode.append(optionStr);
+                    }
+                    $("#outlet_box").append(selectNode).append("<br/>");
                 }
             });
         });
     </script>
     <form action="/settings" method="POST">
         {% csrf_token %}
-        <legend>Pick your favorite news outlets (no more than 5):</legend>
+        <legend>Pick 5 favorite news outlets:</legend>
         <div id="outlet_box"></div>
         </div>
         <input type="submit" value="Configure"/>
