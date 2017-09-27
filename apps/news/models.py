@@ -38,6 +38,7 @@ class UserManager(models.Manager):
         if len(errors) == 0:
             user = User.objects.get(username=postData['username'])
         return {'errors': errors, 'user': user}
+
 class User(models.Model):
     name = models.CharField(max_length=255)
     username = models.CharField(max_length=255, unique=True)
@@ -67,22 +68,26 @@ class OutletManager(models.Manager):
         user = User.objects.get(id=user_id)
         for data in postData:
             if len(data) < 2:
-                errors['news'] = "Your news outlet not valid" 
+                errors['news'] = "Your news outlet is not valid" 
         for key in postData:
-            dataStr = postData[key]
-            dataList = dataStr.split(',')
-            print dataList[0]
-            outlet = NewsOutlet.objects.filter(sourceId=dataList[0]) # the id portion, preceding the comma
-            print outlet
-            if len(outlet) != 0:
-                outlet[0].users.add(user)
-            else:
-                NewsOutlet.objects.create(sourceName=dataList[1], sourceId=dataList[0], users=user)
+            if key != "csrfmiddlewaretoken":
+                dataStr = postData[key]
+                dataList = dataStr.split(',')
+                outlet = NewsOutlet.objects.filter(sourceId=dataList[0]) # the id portion, preceding the comma
+                if len(outlet) != 0:
+                    outlet[0].users.add(user)
+                else:
+                    print dataList
+                    newoutlet = NewsOutlet.objects.create(sourceName=dataList[1], sourceId=dataList[0])
+                    newoutlet.users.add(user)
+                    newoutlet.save()
         return errors
 class NewsOutlet(models.Model):
     sourceName = models.CharField(max_length=255)
     sourceId = models.CharField(max_length=255)
     users = models.ManyToManyField(User, related_name="outlets")
+    created_at = models.DateTimeField(auto_now_add = True)
+    updated_at = models.DateTimeField(auto_now = True)
     objects = OutletManager()
 
 class LocationManager(models.Manager):
