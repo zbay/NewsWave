@@ -46,6 +46,8 @@ class User(models.Model):
     created_at = models.DateTimeField(auto_now_add = True)
     updated_at = models.DateTimeField(auto_now = True)
     objects = UserManager()
+    def __repr__(self):
+        return "Username: {}".format(self.username)
 
 class NoteManager(models.Manager):
     def validate_and_create(self, postData):
@@ -77,7 +79,6 @@ class OutletManager(models.Manager):
                 if len(outlet) != 0:
                     outlet[0].users.add(user)
                 else:
-                    print dataList
                     newoutlet = NewsOutlet.objects.create(sourceName=dataList[1], sourceId=dataList[0])
                     newoutlet.users.add(user)
                     newoutlet.save()
@@ -89,6 +90,8 @@ class NewsOutlet(models.Model):
     created_at = models.DateTimeField(auto_now_add = True)
     updated_at = models.DateTimeField(auto_now = True)
     objects = OutletManager()
+    def __repr__(self):
+        return "Name: {}".format(self.sourceName)
 
 class LocationManager(models.Manager):
     pass
