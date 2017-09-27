@@ -104,6 +104,20 @@ class Location(models.Model):
     user = models.ManyToManyField(User, related_name="locations")
 
 class StoryManager(models.Manager):
-    pass
+    def story_validator(self, postData, user_id):
+        user = User.objects.get(id=user_id)
+        errors = {}
+        if "https" not in postData['url']:
+            errors['url'] = 'not valid url'
+            return errors
+        else:
+            story = Story.objects.create(story_name=postData['title'], story_url=postData['url'])
+            story.users.add(user)
+            story.save()
+        return errors
+
 class Story(models.Model):
-    user = models.ManyToManyField(User, related_name="stories")
+    story_name = models.CharField(max_length=255)
+    story_url = models.CharField(max_length=255)
+    users = models.ManyToManyField(User, related_name="stories")
+    objects = StoryManager()
