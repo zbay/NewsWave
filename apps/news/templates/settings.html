@@ -13,7 +13,7 @@
                     var selectNode = $("<select name='outlet" + i + "'></select>");
                     for(var j = 0; j < sources.length; j++){
                         source = sources[j];
-                        var optionStr = "<option value='" + source.id + "'>" + source.name + "</option>";
+                        var optionStr = "<option value='" + source.id + "," + source.name + "'>" + source.name + "</option>"; // stores two pieces of info in one field, comma-separated
                         selectNode.append(optionStr);
                     }
                     $("#outlet_box").append(selectNode).append("<br/>");

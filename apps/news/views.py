@@ -99,8 +99,8 @@ def settings(request):
         return render(request, "settings.html", context)
     if request.method == "POST":
         outlet_errors = OutletManager.objects.outlet_validator(request.POST, request.session['user_id'])
-        if len(errors):
-            for tag, error in errors.iteritems():
+        if len(outlet_errors):
+            for tag, error in outlet_errors.iteritems():
                 messages.error(request, error)
         return redirect("/")
 

@@ -7,7 +7,14 @@
     {% endif %}
     {% if outlets %}
         {% for outlet in outlets %}
-            <div class="outlet"></div>
+            <div class="outlet" id = "{{outlet.outlet_id}}">
+                <h2>{{outlet.outlet_name}}</h2>
+                {% for story in outlet.stories %}
+                    <a href="{{story.url}}">{{story.title}}</a>
+                    <img src="{{story.urlToImage}}"/>
+                    <p>{{story.description}}</p>
+                {% endfor %}
+            </div>
         {% endfor %}
     {% endif %}
     {% if notes %}
