@@ -2,7 +2,6 @@ from django.shortcuts import render, HttpResponse, redirect
 from django.contrib import messages
 from datetime import datetime
 from .models import *
-import config
 
 def start(request):
     init_session(request)
@@ -56,15 +55,19 @@ def home(request):
     init_session(request)
     # get all locations, outlets, and notes connected to the specific user
     user = User.objects.get(id=request.session['user_id'])
+    print user.outlets
     locations = user.locations.all()
     outlets = user.outlets.all()
     notes = user.notes.all()
     if len(locations) == 0:
         locations = None
+    print outlets
     if len(outlets) == 0:
         outlets = None
     if len(notes) == 0:
         notes = None
+
+
     context = {
         'first_name': request.session['first_name'],
         'locations': locations,
@@ -98,10 +101,11 @@ def settings(request):
         context = {}
         return render(request, "settings.html", context)
     if request.method == "POST":
-        outlet_errors = OutletManager.objects.outlet_validator(request.POST, request.session['user_id'])
+        outlet_errors = NewsOutlet.objects.outlet_validator(request.POST, request.session['user_id'])
         if len(outlet_errors):
             for tag, error in outlet_errors.iteritems():
                 messages.error(request, error)
+            return redirect("/settings")
         return redirect("/")
 
 def delete_story(request): # want to delete story entirely if only one user has saved it. Otherwise, just remove it from the specific user.stories

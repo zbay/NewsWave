@@ -1,5 +1,30 @@
 {% extends "base.html" %}
 {% block content %}
+{% for outlet in outlets %}
+        <script>
+            $(document).ready(function(){
+                $.ajax({
+                    url: "https://newsapi.org/v1/articles?source={{outlet.outlet_id}}&apiKey=4d48612e30ef4e4f8a55c0d6e6f984ef",
+                    method: "GET"
+                })
+                .done(function(source){
+                    var stories = source.articles;
+                    var parentNode = $("#{{outlet.outlet_id}} .stories");
+                    var len = stories.length;
+                    if(len > 10){
+                        len = 10;
+                    }
+                    for(var i = 0; i < len; i++){
+                        var story = stories[i];
+                        var titleString = "<a href='" + story.url + "'>" + story.title + "</a><br />";
+                        var imgString = "<img src='" + story.urlToImage + "'/><br />";
+                        var descString = "<p>" + story.description + "</p>";
+                        parentNode.append(titleString + imgString + descString);
+                    }
+                });
+            });
+        </script>
+    {% endfor %}
     {% if locations %}
         {% for location in locations %}
             <div class="location"></div>
@@ -9,11 +34,7 @@
         {% for outlet in outlets %}
             <div class="outlet" id = "{{outlet.outlet_id}}">
                 <h2>{{outlet.outlet_name}}</h2>
-                {% for story in outlet.stories %}
-                    <a href="{{story.url}}">{{story.title}}</a>
-                    <img src="{{story.urlToImage}}"/>
-                    <p>{{story.description}}</p>
-                {% endfor %}
+                <div class="stories"></div>
             </div>
         {% endfor %}
     {% endif %}
