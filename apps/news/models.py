@@ -68,12 +68,17 @@ class OutletManager(models.Manager):
     def outlet_validator(self, postData, user_id):
         errors = {}
         user = User.objects.get(id=user_id)
+        tempList = []
         for data in postData:
             if len(data) < 2:
                 errors['news'] = "Your news outlet is not valid" 
+                return errors
+        user.outlets.delete()
         for key in postData:
-            if key != "csrfmiddlewaretoken":
-                dataStr = postData[key]
+            if postData[key] not in tempList and key != "csrfmiddlewaretoken":
+                tempList.append(postData[key])
+        for key in tempList:
+                dataStr = key
                 dataList = dataStr.split(',')
                 outlet = NewsOutlet.objects.filter(sourceId=dataList[0]) # the id portion, preceding the comma
                 if len(outlet) != 0:
