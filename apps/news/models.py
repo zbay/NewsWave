@@ -69,15 +69,18 @@ class OutletManager(models.Manager):
             if len(data) < 2:
                 errors['news'] = "Your news outlet not valid" 
         for data in postData:
-            outlet = NewsOutlet.objects.filter(outlet=data)
+            dataStr = data
+            dataList = dataStr.split(',')
+            outlet = NewsOutlet.objects.filter(sourceId=dataList[0])
             if len(outlet[0]):
                 outlet[0].users.add(user)
             else:
-                NewsOutlet.objects.create(outlet=data, users=user)
+                NewsOutlet.objects.create(sourceName=dataList[1], sourceId=dataList[0], users=user)
         return errors
 
 class NewsOutlet(models.Model):
-    outlet = models.CharField(max_length=255)
+    sourceName = models.CharField(max_length=255)
+    sourceId = models.CharField(max_length=255)
     users = models.ManyToManyField(User, related_name="outlets")
     objects = OutletManager()
 
