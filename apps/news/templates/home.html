@@ -1,15 +1,18 @@
 {% extends "base.html" %}
 {% block content %}
+<style>
+    
+</style>
 {% for outlet in outlets %}
         <script>
             $(document).ready(function(){
                 $.ajax({
-                    url: "https://newsapi.org/v1/articles?source={{outlet.outlet_id}}&apiKey=4d48612e30ef4e4f8a55c0d6e6f984ef",
+                    url: "https://newsapi.org/v1/articles?source={{outlet.sourceId}}&apiKey=4d48612e30ef4e4f8a55c0d6e6f984ef",
                     method: "GET"
                 })
                 .done(function(source){
                     var stories = source.articles;
-                    var parentNode = $("#{{outlet.outlet_id}} .stories");
+                    var parentNode = $("#{{outlet.sourceId}} .stories");
                     var len = stories.length;
                     if(len > 10){
                         len = 10;
@@ -32,8 +35,8 @@
     {% endif %}
     {% if outlets %}
         {% for outlet in outlets %}
-            <div class="outlet" id = "{{outlet.outlet_id}}">
-                <h2>{{outlet.outlet_name}}</h2>
+            <div class="outlet" id = "{{outlet.sourceId}}">
+                <h2>{{outlet.sourceName}}</h2>
                 <div class="stories"></div>
             </div>
         {% endfor %}

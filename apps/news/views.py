@@ -98,7 +98,10 @@ def settings(request):
     init_session(request)
     # how do we display the saved settings?
     if request.method == "GET":
-        context = {}
+        outlets = User.objects.get(id=request.session['user_id']).outets.all()
+        context = {
+            'outlets': outlets
+        }
         return render(request, "settings.html", context)
     if request.method == "POST":
         outlet_errors = NewsOutlet.objects.outlet_validator(request.POST, request.session['user_id'])

@@ -73,7 +73,7 @@ class OutletManager(models.Manager):
             if len(data) < 2:
                 errors['news'] = "Your news outlet is not valid" 
                 return errors
-        user.outlets.delete()
+        user.outlets.clear()
         for key in postData:
             if postData[key] not in tempList and key != "csrfmiddlewaretoken":
                 tempList.append(postData[key])
