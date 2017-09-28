@@ -40,7 +40,6 @@ class UserManager(models.Manager):
         return {'errors': errors, 'user': user}
     def delete_story(self, postData, userID): # delete story from user. if no other user has story in reading list, delete story
         errors = {}
-        print postData
         user = User.objects.get(id=userID)
         story = Story.objects.get(id=postData['story_id'])
         user.stories.remove(story)

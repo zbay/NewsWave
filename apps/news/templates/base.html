@@ -16,8 +16,24 @@
                 background-color: teal;
                 font-family: 'Germania One', cursive;
             }
+            body{
+                background-color:#e2cfb6;
+            }
             .jumbotron h1{
                 font-size:80px;
+            }
+            button, input[type='submit']{
+                background-color:teal;
+                border: 3px solid white;
+                border-radius: 10px;
+                font-size:24px;
+                color: white !important;
+                margin-left:auto;
+                margin-right:auto;
+                display:block;
+            }
+            h1, h2{
+                font-family: 'Germania One', cursive;
             }
         </style>
         <title>NewsWave - A homepage to call your own</title>
@@ -30,10 +46,10 @@
         <nav class="navbar navbar-default">
             <div class="container-fluid">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="/">Home</a></li>
-                    <li><a href="/settings">Settings</a></li>
-                    <li><a href="/reading_list">Reading List</a></li>
-                    <li><a href="/logout">Log Out</a></li>
+                    <li class="active showIfActive"><a href="/">Home</a></li>
+                    <li class="showIfActive"><a href="/settings">Settings</a></li>
+                    <li class="showIfActive"><a href="/reading_list">Reading List</a></li>
+                    <li class="showHome"><a href="/logout">Log Out</a></li>
                 </ul>
             </div>
         </nav>
