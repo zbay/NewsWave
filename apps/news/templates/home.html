@@ -48,12 +48,26 @@
         </script>
     {% endfor %}
     <script>
-        $(document).ready(function(e){    
-            $(".storyForm").submit(function(e){
+        $(document).ready(function(){
+            console.log('this happend')    
+            $(".story_submit").on('click', function(e){
+                console.log('that happend')
                 e.preventDefault();
-            });
-            $(".storySubmit").click(function(){
-                // submit story to user's reading list
+                console.log('this other thing happend')
+                $.ajax({
+                    url: $(this).parent().attr('action'),
+                    method: 'post',
+                    data: $(this).parent().serialize(),
+                    error: function(serverResponse){
+                        alert('fail')
+                    },
+                    complete: function(serverResponse){
+                        alert('complete')
+                    },
+                    success: function(serverResponse){
+                            alert('Story Added')
+                    }
+                });
             });
         });
     </script>
