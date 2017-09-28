@@ -107,6 +107,7 @@ class StoryManager(models.Manager):
     def story_validator(self, postData, user_id):
         user = User.objects.get(id=user_id)
         errors = {}
+        print postData
         if "https" not in postData['url']:
             errors['url'] = 'not valid url'
             return errors

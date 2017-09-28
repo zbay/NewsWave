@@ -1,5 +1,7 @@
 from django.shortcuts import render, HttpResponse, redirect
 from django.contrib import messages
+from django.http import JsonResponse
+from django.core import serializers
 from datetime import datetime
 from .models import *
 
@@ -116,11 +118,12 @@ def add_story(request): # need to refactor home.html to use AJAX for this
     init_session(request)
     if request.session['user_id'] == "" or request.method != "POST":
         return redirect("/homepage")  
-    story_errors = Story.objects.story_validator(postData)
+    story_errors = Story.objects.story_validator(request.POST, request.session['user_id'])
     if len(story_errors):
         for tag, error in story_errors.iteritems():
             messages.error(request, error)
-    return 
+    storys_json = serializers.serialize('json', Story.objects.all())
+    return HttpResponse(storys_json, content_type='application/json')
 
 
 def delete_story(request): # want to delete story entirely if only one user has saved it. Otherwise, just remove it from the specific user.stories
