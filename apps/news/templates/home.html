@@ -57,10 +57,7 @@ $(document).ready(function(){
         $.ajax({
             url: $(this).attr('action'),
             method: 'post',
-            data: $(this).serialize(),
-            success: function(serverResponse){
-                alert('Story Added')
-            }
+            data: $(this).serialize()
         });
         $(this).hide();
     });
