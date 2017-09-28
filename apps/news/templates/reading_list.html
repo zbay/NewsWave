@@ -1,5 +1,29 @@
 {% extends "base.html" %}
 {% block content %}
+<style>
+    table{
+        border-collapse:collapse;
+        margin-left:auto;
+        margin-right:auto;
+    }
+    tr, td{
+        border: 1px solid black;
+    }
+    td{
+        padding:10px;
+    }
+    thead tr{
+        background-color: gray;
+    }
+    tbody tr:nth-child(even){
+        background-color:lightgray;
+    }
+    #readingList{
+        margin-left:auto;
+        margin-right:auto;
+        text-align:center;
+    }
+</style>
 <script>
     $(document).ready(function(){
         $(document).on("submit", ".deleteForm", function(e){
@@ -13,8 +37,9 @@
         });
     });
 </script>
-<h2>Reading List</h2>
+
 <div id="readingList">
+    <h2>Reading List</h2>
     <table>
         <thead>
             <tr>
