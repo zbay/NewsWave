@@ -5,7 +5,7 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <link href="https://fonts.googleapis.com/css?family=Germania+One" rel="stylesheet">
         <style>
-            .jumbotron{
+            .jumbotron, footer{
                 color:white;
                 text-align: center;
                 background: linear-gradient(135deg, #0D4D4D 25%, transparent 25%) -50px 0,
@@ -15,6 +15,13 @@
                 background-size: 100px 100px;
                 background-color: teal;
                 font-family: 'Germania One', cursive;
+            }
+            footer{
+                font-size:30px;
+                padding:50px;
+            }
+            footer a{
+                color: yellow !important;
             }
             body{
                 background-color:#e2cfb6;
@@ -46,9 +53,21 @@
         <nav class="navbar navbar-default">
             <div class="container-fluid">
                 <ul class="nav navbar-nav">
-                    <li class="active showIfActive"><a href="/">Home</a></li>
-                    <li class="showIfActive"><a href="/settings">Settings</a></li>
-                    <li class="showIfActive"><a href="/reading_list">Reading List</a></li>
+                    {% if current_page == "home" %}
+                        <li class="active"><a href="/">Home</a></li>
+                    {% else %}
+                        <li><a href="/">Home</a></li>
+                    {% endif %}
+                    {% if current_page == "settings" %}
+                        <li class="active"><a href="/settings">Settings</a></li>
+                    {% else %}
+                        <li><a href="/settings">Settings</a></li>
+                    {% endif %}
+                    {% if current_page == "reading_list" %}
+                        <li class="active"><a href="/reading_list">Reading List</a></li>
+                    {% else %}
+                        <li><a href="/reading_list">Reading List</a></li>
+                    {% endif %}
                     <li class="showHome"><a href="/logout">Log Out</a></li>
                 </ul>
             </div>
@@ -64,4 +83,5 @@
     <body>
         {% block content %} {% endblock content %}
     </body>
+    <footer>Powered by <a href="https://newsapi.org/">newsapi.org</footer>
 </html>
