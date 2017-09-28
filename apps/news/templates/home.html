@@ -21,56 +21,52 @@
         max-height:380px;
     }
 </style>
-{% for outlet in outlets %}
-        <script>
-            $(document).ready(function(){
-                $.ajax({
-                    url: "https://newsapi.org/v1/articles?source={{outlet.sourceId}}&apiKey=4d48612e30ef4e4f8a55c0d6e6f984ef",
-                    method: "GET"
-                })
-                .done(function(source){
-                    var stories = source.articles;
-                    var parentNode = $("#{{outlet.sourceId}} .stories");
-                    var len = stories.length;
-                    if(len > 10){
-                        len = 10;
-                    }
-                    for(var i = 0; i < len; i++){
-                        var story = stories[i];
-                        var titleString = "<a href='" + story.url + "'>" + story.title + "</a><br />";
-                        var imgString = "<img src='" + story.urlToImage + "'/><br />";
-                        var descString = "<p>" + story.description + "</p>";
-                        var formString = "<form action='/add_story' method='post' class='storyForm'>{% csrf_token %}<input type='hidden' name='url' value='" + story.url + "'/><input type='hidden' name='title' value='" + story.title + "'/><input type='submit' class='story_submit' value='Add to reading list'></form>";
-                        parentNode.append("<div class='story'>" + titleString + imgString + descString + formString + "</div>");
-                    }
-                });
+<script>
+$(document).ready(function(){
+    var outlets = $(".outlet");
+    // part 1: populate outlet rows with articles
+    for(let i = 0; i < outlets.length; i++){
+        var sourceId = outlets[i].id;
+        (function(sourceId){
+            $.ajax({
+                url: "https://newsapi.org/v1/articles?source=" + sourceId + "&apiKey=4d48612e30ef4e4f8a55c0d6e6f984ef",
+                method: "GET"
+            })
+            .done(function(source){
+                var stories = source.articles;
+                var parentNode = $("#" + sourceId);
+                var len = stories.length;
+                if(len > 10){
+                    len = 10;
+                }
+                for(let j = 0; j < len; j++){
+                    var story = stories[j];
+                    var titleString = "<a href='" + story.url + "'>" + story.title + "</a><br />";
+                    var imgString = "<img src='" + story.urlToImage + "'/><br />";
+                    var descString = "<p>" + story.description + "</p>";
+                    var formString = "<form action='/add_story' method='post' class='storyForm'>{% csrf_token %}<input type='hidden' name='url' value='" + story.url + "'/><input type='hidden' name='title' value='" + story.title + "'/><input type='submit' class='story_submit' value='Add to reading list'></form>";
+                    parentNode.append("<div class='story'>" + titleString + imgString + descString + formString + "</div>");
+                }           
             });
-        </script>
-    {% endfor %}
-    <script>
-        $(document).ready(function(){
-            console.log('this happend')    
-            $(document).on('click', '.storyForm', function(e){
-                console.log('that happend')
-                e.preventDefault();
-                console.log('this other thing happend')
-                $.ajax({
-                    url: $(this).parent().attr('action'),
-                    method: 'post',
-                    data: $(this).parent().serialize(),
-                    error: function(serverResponse){
-                        alert('fail')
-                    },
-                    complete: function(serverResponse){
-                        alert('complete')
-                    },
-                    success: function(serverResponse){
-                            alert('Story Added')
-                    }
-                });
-            });
+        }(sourceId));
+    }
+
+    // part 2: add stories to reading list
+    $(document).on('submit', '.storyForm', function(e){
+        e.preventDefault();
+        $.ajax({
+            url: $(this).attr('action'),
+            method: 'post',
+            data: $(this).serialize(),
+            success: function(serverResponse){
+                alert('Story Added')
+            }
         });
-    </script>
+        $(this).hide();
+    });
+});
+</script>
+
     {% if locations %}
         {% for location in locations %}
             <div class="location"></div>
@@ -78,7 +74,7 @@
     {% endif %}
     {% if outlets %}
         {% for outlet in outlets %}
-            <div class="outlet" id = "{{outlet.sourceId}}">
+            <div class="outlet" id="{{outlet.sourceId}}">
                 <h2>{{outlet.sourceName}}</h2>
                 <div class="stories"></div>
             </div>

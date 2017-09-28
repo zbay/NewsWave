@@ -107,11 +107,13 @@ class StoryManager(models.Manager):
     def story_validator(self, postData, user_id):
         user = User.objects.get(id=user_id)
         errors = {}
-        print postData
-        if "https" not in postData['url']:
+        if "http" not in postData['url']:
             errors['url'] = 'not valid url'
             return errors
-        else:
+        story_at_url = Story.objects.filter(story_url=postData['url'])
+        #if len(story_at_url) == 0:
+
+        if len(errors) == 0:
             story = Story.objects.create(story_name=postData['title'], story_url=postData['url'])
             story.users.add(user)
             story.save()
