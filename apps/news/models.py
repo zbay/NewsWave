@@ -20,7 +20,7 @@ class UserManager(models.Manager):
             errors['password'] = "Your password must be at least 8 characters in length!"
         user = User.objects.filter(username=postData['username'])
         if len(user) > 0:
-            errors['redundant'] = 'This username has already been taken! Please chosse a different one!'
+            errors['redundant'] = 'This username has already been taken! Please choose a different one!'
         user = None
         if len(errors) == 0:
             hash1 = bcrypt.hashpw(postData['password'].encode(), bcrypt.gensalt())
@@ -38,6 +38,13 @@ class UserManager(models.Manager):
         if len(errors) == 0:
             user = User.objects.get(username=postData['username'])
         return {'errors': errors, 'user': user}
+    def delete_story(self, postData, userID): # delete story from user. if no other user has story in reading list, delete story
+        errors = {}
+        print postData
+        user = User.objects.get(id=userID)
+        story = Story.objects.get(id=postData['story_id'])
+        user.stories.remove(story)
+        return errors
 
 class User(models.Model):
     name = models.CharField(max_length=255)
@@ -107,14 +114,19 @@ class StoryManager(models.Manager):
     def story_validator(self, postData, user_id):
         user = User.objects.get(id=user_id)
         errors = {}
-        print postData
-        if "https" not in postData['url']:
+        if "http" not in postData['url']:
             errors['url'] = 'not valid url'
             return errors
-        else:
+        story = Story.objects.filter(story_url=postData['url'])
+        if len(story) == 0:
             story = Story.objects.create(story_name=postData['title'], story_url=postData['url'])
-            story.users.add(user)
-            story.save()
+        else:
+            story = story[0]
+        if len(errors) == 0:
+            this_user = story.users.filter(id=user_id)
+            if len(this_user) == 0:
+                story.users.add(user)
+                story.save()
         return errors
 
 class Story(models.Model):

@@ -122,14 +122,18 @@ def add_story(request): # need to refactor home.html to use AJAX for this
     if len(story_errors):
         for tag, error in story_errors.iteritems():
             messages.error(request, error)
-    storys_json = serializers.serialize('json', Story.objects.all())
-    return HttpResponse(storys_json, content_type='application/json')
+    stories_json = serializers.serialize('json', User.objects.get(id=request.session['user_id']).stories.all())
+    print stories_json
+    return HttpResponse({}, content_type='application/json')
 
 
 def delete_story(request): # want to delete story entirely if only one user has saved it. Otherwise, just remove it from the specific user.stories
     init_session(request)
     if request.session['user_id'] == "" or request.method != "POST":
-        return redirect("/")
+        return redirect("/reading_list")
+    else:
+        User.objects.delete_story(request.POST, request.session['user_id'])
+        return HttpResponse({}, content_type='application/json')
 
 def weather(request):
     init_session(request)
