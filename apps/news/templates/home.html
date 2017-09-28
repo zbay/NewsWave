@@ -50,7 +50,7 @@
     <script>
         $(document).ready(function(){
             console.log('this happend')    
-            $(".story_submit").on('click', function(e){
+            $(document).on('click', '.storyForm', function(e){
                 console.log('that happend')
                 e.preventDefault();
                 console.log('this other thing happend')
