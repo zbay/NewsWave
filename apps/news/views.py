@@ -93,7 +93,8 @@ def reading_list(request, username):
     # TODO: add a privacy check (whether the user has indicated a preference for privacy)
     if request.session['user_id'] == "":
         return redirect("/")
-    stories = User.objects.get(id=request.session['user_id']).stories.all()
+    stories = User.objects.get(id=request.session['user_id']).stories.all().order_by('created_at')
+    print stories
     context = {
         'stories': stories,
         'current_page': "reading_list"
