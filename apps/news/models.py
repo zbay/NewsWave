@@ -132,4 +132,5 @@ class Story(models.Model):
     story_name = models.CharField(max_length=255)
     story_url = models.CharField(max_length=255)
     users = models.ManyToManyField(User, related_name="stories")
+    created_at = models.DateTimeField(auto_now_add=True)
     objects = StoryManager()
