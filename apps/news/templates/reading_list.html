@@ -31,7 +31,7 @@
 </style>
 <script>
     $(document).ready(function(){
-        $(document).on("submit", ".deleteForm", function(e){
+        $("table").on("submit", ".deleteForm", function(e){
             e.preventDefault();
             $.ajax({
                 url: $(this).attr('action'),
@@ -56,7 +56,7 @@
             {% for story in stories %}
                 <tr>
                     <td>
-                        <a href="{{story.story_url}}">{{story.story_name}}</a>
+                        <a class="story_name" href="{{story.story_url}}" target="_blank">{{story.story_name}}</a>
                     </td>
                     <td>
                         <form action="/delete_story" method="post" class="deleteForm">
