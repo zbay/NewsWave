@@ -30,6 +30,13 @@
     }
 </style>
 <script>
+    function OrderBy(a,b,n){
+        if (n) return a-b;
+        if (a < b) return -1;
+        if (a > b) return 1;
+        return 0;
+    }
+
     $(document).ready(function(){
         $("table").on("submit", ".deleteForm", function(e){
             e.preventDefault();
@@ -49,6 +56,7 @@
         <thead>
             <tr>
                 <td>Story</td>
+                <td class="date">Added</td>
                 <td>Delete?</td>
             </tr>
         </thead>
@@ -57,6 +65,9 @@
                 <tr>
                     <td>
                         <a class="story_name" href="{{story.story_url}}" target="_blank">{{story.story_name}}</a>
+                    </td>
+                    <td>
+                        <span class="date">{{story.created_at}}</span>
                     </td>
                     <td>
                         <form action="/delete_story" method="post" class="deleteForm">
