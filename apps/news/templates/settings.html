@@ -3,7 +3,7 @@
     <script>
         $(document).ready(function(){
             $.ajax({
-                url: "https://newsapi.org/v1/sources?language=en",
+                url: "https://newsapi.org/v1/sources?language={{request.session.language}}",
                 method: "GET"
             })
             .done(function(sources){
@@ -11,7 +11,7 @@
                 optionStr = "";
                 for(var i = 0; i < sources.length; i++){
                     source = sources[i];
-                    optionStr += "<option value='" + source.id + "," + source.name + "'>" + source.name + "</option>"; // stores two pieces of info in one field, comma-separated                    
+                    optionStr += "<option value='" + source.id + "," + source.name + "'>" + source.name + "</option>"; // stores two pieces of info in one field, comma-separated
                 }
                 for(var i = 1; i <= 5; i++){
                     var selectNode = $("select[name='outlet" + i + "']");
@@ -26,9 +26,18 @@
                         }
                     }
                 }
-            });
-        });
+            }
+        )
+    });
     </script>
+    <form action="/language" method="POST">
+        {% csrf_token %}
+        <legend>Default Language:</legend>
+        <input type="hidden" name="userID" value={{request.session.user_id}}>
+        <input type="radio" name="language" value="en"> English<br>
+        <input type="radio" name="language" value="de"> German<br>
+        <input type="submit" value="Change">
+    </form>
     <form action="/settings" method="POST">
         {% csrf_token %}
         <legend>Pick 5 favorite news outlets:</legend>
@@ -57,7 +66,6 @@
                 <select name='outlet5'>
                     <option value='{{outlets.4.sourceId}},{{outlets.4.sourceName}}' selected>{{outlets.4.sourceName}}</option>
                 </select>
-        </div>
         </div>
         <input type="submit" value="Configure"/>
     </form>

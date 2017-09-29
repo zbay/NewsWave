@@ -44,6 +44,7 @@ $(document).ready(function(){
     // part 1: populate outlet rows with articles
     for(let i = 0; i < outlets.length; i++){
         var sourceId = outlets[i].id;
+        
         (function(sourceId){
             $.ajax({
                 url: "https://newsapi.org/v1/articles?source=" + sourceId + "&apiKey=4d48612e30ef4e4f8a55c0d6e6f984ef",

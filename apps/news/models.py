@@ -24,7 +24,7 @@ class UserManager(models.Manager):
         user = None
         if len(errors) == 0:
             hash1 = bcrypt.hashpw(postData['password'].encode(), bcrypt.gensalt())
-            user = User.objects.create(name=postData['name'], username=postData['username'], password=hash1)
+            user = User.objects.create(name=postData['name'], username=postData['username'], password=hash1, language=postData['language'])
         return {'errors': errors, 'user': user}
     def login(self, postData):
         errors = {}
@@ -49,6 +49,7 @@ class User(models.Model):
     name = models.CharField(max_length=255)
     username = models.CharField(max_length=255, unique=True)
     password = models.TextField()
+    language = models.CharField(max_length=2, null=True)
     created_at = models.DateTimeField(auto_now_add = True)
     updated_at = models.DateTimeField(auto_now = True)
     objects = UserManager()

@@ -29,6 +29,7 @@ def login(request):
         return redirect("/")
     else:
         request.session['user_id'] = login_result['user'].id
+        request.session['language'] = login_result['user'].language
         request.session['first_name'] = extract_first_name(login_result['user'].name)
         return redirect("/homepage")
 
@@ -46,6 +47,7 @@ def register(request):
         return redirect("/")
     else:
         request.session['user_id'] = register_result['user'].id
+        request.session['language'] = register_result['user'].language
         request.session['first_name'] = extract_first_name(register_result['user'].name)
         return redirect("/settings")
 
@@ -104,7 +106,7 @@ def settings(request):
     if request.method == "GET":
         outlets = User.objects.get(id=request.session['user_id']).outlets.all()
         context = {
-            'outlets': outlets
+            'outlets': outlets,
         }
         return render(request, "settings.html", context)
     if request.method == "POST":
@@ -114,6 +116,17 @@ def settings(request):
                 messages.error(request, error)
             return redirect("/settings")
         return redirect("/")
+
+def language(request):
+    init_session(request)
+    if request.method != "POST":
+        return redirect('/settings')
+    else:
+        user = User.objects.get(id=request.session['user_id'])
+        user.language = request.POST['language']
+        request.session['language'] = user.language
+        user.save()
+        return redirect('/settings')
 
 def add_story(request): # need to refactor home.html to use AJAX for this
     init_session(request)
