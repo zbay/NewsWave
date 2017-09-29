@@ -99,7 +99,8 @@ def reading_list(request, username):
     print stories
     context = {
         'stories': stories,
-        'current_page': "reading_list"
+        'current_page': "reading_list",
+        'first_name': request.session['first_name']
     }
     return render(request, "reading_list.html", context)
 
