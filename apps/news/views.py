@@ -76,7 +76,8 @@ def home(request):
         'first_name': request.session['first_name'],
         'locations': locations,
         'outlets': outlets,
-        'notes': notes
+        'notes': notes,
+        'current_page': "home"
     }
     return render(request, "home.html", context)
 
@@ -94,7 +95,8 @@ def reading_list(request, username):
         return redirect("/")
     stories = User.objects.get(id=request.session['user_id']).stories.all()
     context = {
-        'stories': stories
+        'stories': stories,
+        'current_page': "reading_list"
     }
     return render(request, "reading_list.html", context)
 
@@ -103,7 +105,8 @@ def settings(request):
     if request.method == "GET":
         outlets = User.objects.get(id=request.session['user_id']).outlets.all()
         context = {
-            'outlets': outlets
+            'outlets': outlets,
+            'current_page': "settings"
         }
         return render(request, "settings.html", context)
     if request.method == "POST":
