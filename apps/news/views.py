@@ -71,7 +71,8 @@ def home(request):
     context = {
         'first_name': request.session['first_name'],
         'locations': locations,
-        'outlets': outlets
+        'outlets': outlets,
+        'current_page': "home"
     }
     return render(request, "home.html", context)
 
@@ -83,7 +84,8 @@ def notes(request):
         return redirect('/')
     else:
         context = {
-            'notes': Note.objects.filter(user=request.session['user_id']).order_by('-created_at')
+            'notes': Note.objects.filter(user=request.session['user_id']).order_by('-created_at'),
+            'current_page': "notes"
         }
         return render(request, "notes.html", context)
     # return all notes as JSON to the client using AJAX
@@ -93,9 +95,11 @@ def reading_list(request, username):
     # TODO: add a privacy check (whether the user has indicated a preference for privacy)
     if request.session['user_id'] == "":
         return redirect("/")
-    stories = User.objects.get(id=request.session['user_id']).stories.all()
+    stories = User.objects.get(id=request.session['user_id']).stories.all().order_by('created_at')
+    print stories
     context = {
-        'stories': stories
+        'stories': stories,
+        'current_page': "reading_list"
     }
     return render(request, "reading_list.html", context)
 
@@ -104,7 +108,8 @@ def settings(request):
     if request.method == "GET":
         outlets = User.objects.get(id=request.session['user_id']).outlets.all()
         context = {
-            'outlets': outlets
+            'outlets': outlets,
+            'current_page': "settings"
         }
         return render(request, "settings.html", context)
     if request.method == "POST":

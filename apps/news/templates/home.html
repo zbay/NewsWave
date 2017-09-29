@@ -5,7 +5,7 @@
         margin-left:auto;
         margin-right:auto;
         overflow-x: scroll;
-        max-width:90%;
+        max-width:95%;
         max-height:600px;
         display:flex;
         flex-direction: row;
@@ -30,15 +30,29 @@
     .story p{
         padding: 10px;
     }
-    .story a{
-        font-weight:30px !important;
-    }
     h2{
         display: block;
-        background-color:
+        background-color: #34282C;
+        color:yellow;
+        border:3px solid black;
+        padding-left:10px;
+        padding-top:15px;
+        padding-bottom:15px;
+        margin-left:2.5%;
+        margin-right:2.5%;
+    }
+    .title{
+        height:60px;
+        font-size:18px;
+        text-align:center;
+        text-decoration: underline;
+        display: block;
+        padding-bottom: 10px;
+        max-width:90%;
     }
 </style>
 <script>
+    // fix the quote problem: replace quotes with some delimiter. For reading list, find-replace
 $(document).ready(function(){
     var outlets = $(".outlet");
     // part 1: populate outlet rows with articles
@@ -58,10 +72,12 @@ $(document).ready(function(){
                 }
                 for(let j = 0; j < len; j++){
                     var story = stories[j];
-                    var titleString = "<a href='" + story.url + "'>" + story.title + "</a><br />";
+                    console.log(story.title);
+                    console.log(story.title.replace(/["']/g, "&quot;"));
+                    var titleString = "<a class='title' href='" + story.url + "'>" + story.title + "</a><br />";
                     var imgString = "<img src='" + story.urlToImage + "'/><br />";
                     var descString = "<p>" + story.description + "</p>";
-                    var formString = "<form action='/add_story' method='post' class='storyForm'>{% csrf_token %}<input type='hidden' name='url' value='" + story.url + "'/><input type='hidden' name='title' value='" + story.title + "'/><input type='submit' class='story_submit' value='Add to reading list'></form>";
+                    var formString = "<form action='/add_story' method='post' class='storyForm'>{% csrf_token %}<input type='hidden' name='url' value='" + story.url + "'/><input type='hidden' name='title' value='" + story.title.replace(/["]/g, "&quot;").replace(/[']/g, "&apos;") + "'/><input type='submit' class='story_submit' value='Add to reading list'></form>";
                     parentNode.append("<div class='story'>" + titleString + imgString + formString + descString + "</div>");
                 }           
             });
