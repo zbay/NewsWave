@@ -40,7 +40,16 @@
                         }
                     }
                 }
+                extractSourceIds();
             });
+
+            function extractSourceIds(){
+                var selectedOptions = $("#outlet_box :selected");
+                var values = [];
+                for(var i = 0; i < selectedOptions.length; i++){
+                    values.push(selectedOptions[i].value);
+                }
+            }
         });
     </script>
     <form action="/settings" method="POST">

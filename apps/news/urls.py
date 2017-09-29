@@ -6,7 +6,6 @@ urlpatterns = [
   url(r'^settings$', views.settings), # get OR post. user can change his/her settings here
   url(r'^login$', views.login), #post
   url(r'^register$', views.register), #post
-  url(r'^news$', views.get_news), # POST request(s) to news API
   url(r'^logout$', views.logout),
   url(r'^weather$', views.weather), # POST request(s) to weather API
   url(r'^reading_list/(?P<username>)$', views.reading_list), # publicly available reading list. user can set to private in options

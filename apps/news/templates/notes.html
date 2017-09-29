@@ -59,6 +59,9 @@
                 <td>{{ note.text }}</td>
             </tr>
             <tr>
+                <td>Posted at: {{ note.created_at }}</td>
+            </tr>
+            <tr>
                 <td><form action="/delete_note" method="POST">
                     {% csrf_token %}
                     <input type="hidden" name="note_id" value={{note.id}}>

@@ -1,3 +1,5 @@
+# TODO: allow settings to make an AJAX request. Use extractSourceIds() to pass data to server 
+
 from django.shortcuts import render, HttpResponse, redirect
 from django.contrib import messages
 from django.http import JsonResponse
@@ -75,9 +77,6 @@ def home(request):
         'current_page': "home"
     }
     return render(request, "home.html", context)
-
-def get_news(request): # maybe do this 100% on the client side
-    init_session(request)
 
 def notes(request):
     if request.session['user_id'] == "":
