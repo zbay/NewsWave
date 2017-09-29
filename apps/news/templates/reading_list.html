@@ -5,9 +5,14 @@
         border-collapse:collapse;
         margin-left:auto;
         margin-right:auto;
+        margin-bottom: 10px;
+    }
+    thead td{
+        color:yellow;
+        font-family: 'Germania One', cursive;
     }
     tr, td{
-        border: 1px solid black;
+        border: 4px solid teal;
     }
     td{
         padding:10px;
@@ -25,8 +30,15 @@
     }
 </style>
 <script>
+    function OrderBy(a,b,n){
+        if (n) return a-b;
+        if (a < b) return -1;
+        if (a > b) return 1;
+        return 0;
+    }
+
     $(document).ready(function(){
-        $(document).on("submit", ".deleteForm", function(e){
+        $("table").on("submit", ".deleteForm", function(e){
             e.preventDefault();
             $.ajax({
                 url: $(this).attr('action'),
@@ -44,6 +56,7 @@
         <thead>
             <tr>
                 <td>Story</td>
+                <td class="date">Added</td>
                 <td>Delete?</td>
             </tr>
         </thead>
@@ -51,7 +64,10 @@
             {% for story in stories %}
                 <tr>
                     <td>
-                        <a href="{{story.story_url}}">{{story.story_name}}</a>
+                        <a class="story_name" href="{{story.story_url}}" target="_blank">{{story.story_name}}</a>
+                    </td>
+                    <td>
+                        <span class="date">{{story.created_at}}</span>
                     </td>
                     <td>
                         <form action="/delete_story" method="post" class="deleteForm">
