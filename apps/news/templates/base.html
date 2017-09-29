@@ -94,6 +94,11 @@
                     {% else %}
                         <li><a href="/reading_list">Reading List</a></li>
                     {% endif %}
+                    {% if current_page == "notes" %}
+                      <li class="active"><a href="/notes">Notes</a></li>
+                    {% else %}
+                      <li><a href="/notes">Notes</a></li>
+                    {% endif %}
                     <li class="showHome"><a href="/logout">Log Out</a></li>
                 </ul>
             </div>

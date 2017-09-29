@@ -62,21 +62,16 @@ def home(request):
     print user.outlets
     locations = user.locations.all()
     outlets = user.outlets.all()
-    notes = user.notes.all()
     if len(locations) == 0:
         locations = None
     print outlets
     if len(outlets) == 0:
         outlets = None
-    if len(notes) == 0:
-        notes = None
-
 
     context = {
         'first_name': request.session['first_name'],
         'locations': locations,
         'outlets': outlets,
-        'notes': notes,
         'current_page': "home"
     }
     return render(request, "home.html", context)
@@ -85,7 +80,14 @@ def get_news(request): # maybe do this 100% on the client side
     init_session(request)
 
 def notes(request):
-    init_session(request)
+    if request.session['user_id'] == "":
+        return redirect('/')
+    else:
+        context = {
+            'notes': Note.objects.filter(user=request.session['user_id']).order_by('-created_at'),
+            'current_page': "notes"
+        }
+        return render(request, "notes.html", context)
     # return all notes as JSON to the client using AJAX
 
 def reading_list(request, username):
@@ -143,10 +145,21 @@ def weather(request):
     init_session(request)
     
 def new_note(request): 
-    init_session(request)
+    if request.session['user_id'] == "" or request.method != "POST":
+        return redirect('/notes')
+    else:
+        errors = Note.objects.validate_and_create(request.POST, request.session['user_id'])
+        if len(errors):
+            for tag, error in errors.iteritems():
+                messages.error(request, error)
+        return redirect('/notes')
 
 def delete_note(request):
-    init_session(request)
+    if request.session['user_id'] == "" or request.method != "POST":
+        return redirect("/notes")
+    else:
+        Note.objects.delete_note(request.POST)
+        return redirect("/notes")
 
 def init_session(request):
     if not 'user_id' in request.session:
