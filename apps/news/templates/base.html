@@ -19,6 +19,24 @@
             footer{
                 font-size:30px;
                 padding:50px;
+                margin-top:15px;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                flex: 1;
+                align-self:center;
+                width:100%;
+            }
+            .wrapper{
+                min-height:100vh;
+                flex-direction:column;
+                display:flex;
+            }
+            .VertCenterTop{
+                align-self:flex-start;
+            }
+            .VertCenterBottom{
+                align-self:flex-end;
             }
             footer a{
                 color: yellow !important;
@@ -42,9 +60,17 @@
             h1, h2{
                 font-family: 'Germania One', cursive;
             }
+            .error{
+                color:red;
+                font-weight:bold;
+                font-size:30px;
+                text-align:center;
+                list-style-type: none;
+            }
         </style>
         <title>NewsWave - A homepage to call your own</title>
     </head>
+    <div class="wrapper">
     <div class="jumbotron">
         <h1>NewsWave</h1>
         <p>A homepage to call your own</p>
@@ -83,5 +109,10 @@
     <body>
         {% block content %} {% endblock content %}
     </body>
-    <footer>Powered by <a href="https://newsapi.org/">newsapi.org</footer>
+    <footer>
+        <div class="VertCenterTop"></div>
+        <div>Powered by <a href="https://newsapi.org/">newsapi.org</div>
+        <div class="VertCenterBottom"></div>
+    </footer>
+    </div>
 </html>
