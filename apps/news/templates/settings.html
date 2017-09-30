@@ -10,6 +10,9 @@
             color:white;
             background-color:#34282C
         }
+        input{
+            margin-top:10px !important;
+        }
     </style>
     <script>
         $(document).ready(function(){
@@ -37,9 +40,17 @@
                         }
                     }
                 }
+                extractSourceIds();
+            });
+
+            function extractSourceIds(){
+                var selectedOptions = $("#outlet_box :selected");
+                var values = [];
+                for(var i = 0; i < selectedOptions.length; i++){
+                    values.push(selectedOptions[i].value);
+                }
             }
-        )
-    });
+        });
     </script>
     <form action="/language" method="POST">
         {% csrf_token %}
