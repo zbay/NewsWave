@@ -1,4 +1,4 @@
-# TODO: allow settings to make an AJAX request. Use extractSourceIds() to pass data to server 
+# TODO: process array of source values on server
 
 from django.shortcuts import render, HttpResponse, redirect
 from django.contrib import messages
@@ -111,17 +111,11 @@ def settings(request):
         outlets = User.objects.get(id=request.session['user_id']).outlets.all()
         context = {
             'outlets': outlets,
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
             'current_page': "settings"
->>>>>>> bd9a17685ab4dd911fd0ae77c729321dc25600d6
-=======
-            'current_page': "settings"
->>>>>>> bd9a17685ab4dd911fd0ae77c729321dc25600d6
         }
         return render(request, "settings.html", context)
     if request.method == "POST":
+        print request.POST
         outlet_errors = NewsOutlet.objects.outlet_validator(request.POST, request.session['user_id'])
         if len(outlet_errors):
             for tag, error in outlet_errors.iteritems():

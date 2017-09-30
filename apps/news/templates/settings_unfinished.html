@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
+<!-- A work in progress... to allow any number of sources -->
     <style>
         form{
             margin-left:auto;
@@ -40,40 +41,42 @@
                         }
                     }
                 }
+                extractSourceIds();
             });
+
+            
+            $("form[action='settings']").submit(function(e){
+                e.preventDefault();
+                $.ajax({
+                    url: $(this).attr('action'),
+                    method: 'post',
+                    data: extractSourceIds()
+                });
+            });
+
+            function extractSourceIds(){
+                var selectedOptions = $("#outlet_box :selected");
+                var values = [];
+                for(var i = 0; i < selectedOptions.length; i++){
+                    values.push(selectedOptions[i].value);
+                }
+                return {"sources": values}
+            }
         });
     </script>
     <form action="/settings" method="POST">
         {% csrf_token %}
         <legend>Pick your favorite news outlets:</legend>
         <div id="outlet_box">
-                <label>Source 1:</label>
-                <select name='outlet1'>
-                    <option value='{{outlets.0.sourceId}},{{outlets.0.sourceName}}' selected>{{outlets.0.sourceName}}</option>
-                </select>
-                <br />
-                <label>Source 2:</label>
-                <select name='outlet2'>
-                    <option value='{{outlets.1.sourceId}},{{outlets.1.sourceName}}' selected>{{outlets.1.sourceName}}</option>
-                </select>
-                <br />
-                <label>Source 3:</label>
-                <select name='outlet3'>
-                    <option value='{{outlets.2.sourceId}},{{outlets.2.sourceName}}' selected>{{outlets.2.sourceName}}</option>
-                </select>
-                <br />
-                <label>Source 4:</label>
-                <select name='outlet4'>
-                        <option value='{{outlets.3.sourceId}},{{outlets.3.sourceName}}' selected>{{outlets.3.sourceName}}</option>
-                </select>
-                <br />
-                <label>Source 5:</label>
-                <select name='outlet5'>
-                    <option value='{{outlets.4.sourceId}},{{outlets.4.sourceName}}' selected>{{outlets.4.sourceName}}</option>
-                </select>
+                {% for outlet in outlets %}
+                    <label>Source: </label>
+                    <select>
+                        <option value='{{outlet.sourceId}},{{outlet.sourceName}}' selected>{{outlet.sourceName}}</option>
+                    </select>
+                {% endfor %}
         </div>
         <br />
-        <input type="submit" value="Configure"/>
+        <input type="submit" value="Save Sources"/>
     </form>
     <form action="/language" method="POST">
         {% csrf_token %}
