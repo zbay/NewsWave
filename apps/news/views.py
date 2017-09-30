@@ -112,6 +112,10 @@ def settings(request):
         context = {
             'outlets': outlets,
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+            'current_page': "settings"
+>>>>>>> bd9a17685ab4dd911fd0ae77c729321dc25600d6
 =======
             'current_page': "settings"
 >>>>>>> bd9a17685ab4dd911fd0ae77c729321dc25600d6
